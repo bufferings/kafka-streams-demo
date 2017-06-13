@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class StateStoreViewer {
+public class TweetWordCountsViewer {
 
   @Autowired
   private KStreamBuilderFactoryBean kStreamBuilder;
 
   @GetMapping
   public List<KeyValue<String, Long>> query() {
-    final ReadOnlyKeyValueStore<String, Long> store = kStreamBuilder.getKafkaStreams().store("TweetTextWords",
+    final ReadOnlyKeyValueStore<String, Long> store = kStreamBuilder.getKafkaStreams().store("TweetWordCounts",
         QueryableStoreTypes.keyValueStore());
 
     final List<KeyValue<String, Long>> results = new ArrayList<>();
@@ -30,11 +30,11 @@ public class StateStoreViewer {
       results.add(range.next());
     }
 
-    // 強引に上位100件をとってみた
+    // 強引に上位10件をとってみた
     Collections.sort(results, (r1, r2) -> {
       return r2.value.intValue() - r1.value.intValue();
     });
-    return results.subList(0, Math.min(results.size(), 100));
+    return results.subList(0, Math.min(results.size(), 10));
   }
 
 }
