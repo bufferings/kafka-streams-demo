@@ -14,6 +14,10 @@ I read these articles:
 
 ## Changelog
 
+### v0.3
+
+Tried multiple schema for one topic.
+
 ### v0.2
 
 Apply Avro Schema Registry.
