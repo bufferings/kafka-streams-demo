@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import java.io.InputStream;
+import java.time.ZoneId;
 
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
@@ -28,6 +29,10 @@ public class TwitterToKafka implements CommandLineRunner {
   @Value(value = "classpath:avro/tweet.avsc")
   private Resource tweetSchema;
 
+  // 混ぜても使えるのかの確認
+  @Value(value = "classpath:avro/different-schema.avsc")
+  private Resource differentSchema;
+
   @Autowired
   private KafkaTemplate<String, GenericRecord> template;
 
@@ -38,15 +43,28 @@ public class TwitterToKafka implements CommandLineRunner {
       schema = new Schema.Parser().parse(is);
     }
 
+    Schema schema2;
+    try (InputStream is2 = differentSchema.getInputStream()) {
+      schema2 = new Schema.Parser().parse(is2);
+    }
+
     TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
     twitterStream.addListener(new StatusAdapter() {
       @Override
       public void onStatus(Status status) {
-        GenericRecord tweet = new GenericData.Record(schema);
-        tweet.put("id", status.getId());
-        tweet.put("text", status.getText());
-
         try {
+          GenericRecord tweet;
+          if (status.getId() % 2 == 0) {
+            tweet = new GenericData.Record(schema);
+            tweet.put("id", status.getId());
+            tweet.put("text", status.getText());
+          } else {
+            tweet = new GenericData.Record(schema2);
+            tweet.put("id2", status.getId());
+            tweet.put("createdAt", status.getCreatedAt().toInstant().atZone(ZoneId.systemDefault()).toString());
+            tweet.put("text2", status.getText());
+          }
+
           template.send("Tweets", tweet);
         } catch (RuntimeException e) {
           logger.error("Fail to send.", e);

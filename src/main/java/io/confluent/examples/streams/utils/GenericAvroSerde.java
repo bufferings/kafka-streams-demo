@@ -10,6 +10,8 @@ import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.serialization.Serializer;
 
+import com.example.demo.GenericAvroSerializerWithSchemaName;
+
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
 
 public class GenericAvroSerde implements Serde<GenericRecord> {
@@ -20,7 +22,7 @@ public class GenericAvroSerde implements Serde<GenericRecord> {
    * Constructor used by Kafka Streams.
    */
   public GenericAvroSerde() {
-    inner = Serdes.serdeFrom(new GenericAvroSerializer(), new GenericAvroDeserializer());
+    inner = Serdes.serdeFrom(new GenericAvroSerializerWithSchemaName(), new GenericAvroDeserializer());
   }
 
   public GenericAvroSerde(SchemaRegistryClient client) {
@@ -28,7 +30,8 @@ public class GenericAvroSerde implements Serde<GenericRecord> {
   }
 
   public GenericAvroSerde(SchemaRegistryClient client, Map<String, ?> props) {
-    inner = Serdes.serdeFrom(new GenericAvroSerializer(client), new GenericAvroDeserializer(client, props));
+    inner = Serdes.serdeFrom(new GenericAvroSerializerWithSchemaName(client),
+        new GenericAvroDeserializer(client, props));
   }
 
   @Override

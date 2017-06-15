@@ -22,7 +22,6 @@ import org.springframework.kafka.core.ProducerFactory;
 
 import io.confluent.examples.streams.utils.GenericAvroSerde;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
-import io.confluent.kafka.serializers.KafkaAvroSerializer;
 
 @Configuration
 @EnableKafka
@@ -44,8 +43,8 @@ public class KafkaClientConfig {
   @Bean
   public ProducerFactory<?, ?> kafkaProducerFactory() {
     Map<String, Object> producerProperties = properties.buildProducerProperties();
-    producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
-    producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
+    producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializerWithSchemaName.class);
+    producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializerWithSchemaName.class);
     // Schema Registry
     producerProperties.put(SCHEMA_REGISTRY_URL_KEY, schemaRegistryUrl);
     return new DefaultKafkaProducerFactory<Object, Object>(producerProperties);

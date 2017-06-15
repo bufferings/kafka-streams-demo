@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.confluent.examples.streams.utils;
+package com.example.demo;
 
 import java.util.Map;
 
@@ -21,21 +21,20 @@ import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.common.serialization.Serializer;
 
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
-import io.confluent.kafka.serializers.KafkaAvroSerializer;
 
-public class GenericAvroSerializer implements Serializer<GenericRecord> {
+public class GenericAvroSerializerWithSchemaName implements Serializer<GenericRecord> {
 
-  KafkaAvroSerializer inner;
+  KafkaAvroSerializerWithSchemaName inner;
 
   /**
    * Constructor used by Kafka Streams.
    */
-  public GenericAvroSerializer() {
-    inner = new KafkaAvroSerializer();
+  public GenericAvroSerializerWithSchemaName() {
+    inner = new KafkaAvroSerializerWithSchemaName();
   }
 
-  public GenericAvroSerializer(SchemaRegistryClient client) {
-    inner = new KafkaAvroSerializer(client);
+  public GenericAvroSerializerWithSchemaName(SchemaRegistryClient client) {
+    inner = new KafkaAvroSerializerWithSchemaName(client);
   }
 
   @Override

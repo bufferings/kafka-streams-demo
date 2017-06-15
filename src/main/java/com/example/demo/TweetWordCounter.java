@@ -29,9 +29,15 @@ public class TweetWordCounter {
     // @formatter:off
     stream
       .map((key, tweet) -> {
-        String text = ((Utf8)tweet.get("text")).toString();
-        logger.info("Map to string. " + text);
-        return new KeyValue<String, String>(key, ((Utf8)tweet.get("text")).toString());
+        if ("Tweet".equals(tweet.getSchema().getName())) {
+          String text = ((Utf8) tweet.get("text")).toString();
+          logger.info("[Tweet]Map to string. " + text);
+          return new KeyValue<String, String>(key, text);
+        } else {
+          String text = ((Utf8) tweet.get("text2")).toString();
+          logger.info("[Tweet2]Map to string. " + text);
+          return new KeyValue<String, String>(key, text);
+        }
       })
       .flatMapValues(value -> {
         List<String> tokens = tokenize(value);
