@@ -14,6 +14,10 @@ I read these articles:
 
 ## Changelog
 
+### v0.4
+
+Tried aggregate though so dirty code...
+
 ### v0.3
 
 Tried multiple schema for one topic.
