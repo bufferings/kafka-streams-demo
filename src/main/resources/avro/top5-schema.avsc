@@ -1,0 +1,11 @@
+{
+  "name": "TweetWordTop5",
+  "type": "record",
+  "fields": [
+    {"name": "a1", "type": ["null", "string"]},
+    {"name": "a2", "type": ["null", "string"]},
+    {"name": "a3", "type": ["null", "string"]},
+    {"name": "a4", "type": ["null", "string"]},
+    {"name": "a5", "type": ["null", "string"]}
+  ]
+}

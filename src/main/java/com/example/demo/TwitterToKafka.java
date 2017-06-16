@@ -78,7 +78,7 @@ public class TwitterToKafka implements CommandLineRunner {
 
   @KafkaListener(id = "foo", topics = "Tweets")
   public void listen(GenericRecord record) throws Exception {
-    logger.info("Tweet received. " + record);
+    // logger.info("Tweet received. " + record);
   }
 
 }
